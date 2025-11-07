@@ -1,8 +1,11 @@
 {
-  "name": "workflow-demo",
+  "name": "github-actions-demo",
   "version": "1.0.0",
+  "description": "Demo for GitHub Actions CI",
+  "main": "index.js",
   "scripts": {
-    "build": "echo 'Building the app...'",
-    "test": "echo 'Running tests...' && exit 0"
-  }
+    "test": "node index.js"
+  },
+  "author": "",
+  "license": "ISC"
 }
