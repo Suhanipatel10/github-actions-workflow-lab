@@ -1,0 +1,58 @@
+name: Practical 6 - GitHub Actions Workflow
+
+# -------------------------------
+# Step 1: Define when this workflow should run
+# -------------------------------
+on:
+  push:        # Triggered whenever code is pushed to any branch
+  pull_request:  # Triggered when a pull request is created
+  workflow_dispatch:  # Manual trigger from the GitHub Actions UI
+
+# -------------------------------
+# Step 2: Default settings (optional)
+# -------------------------------
+defaults:
+  run:
+    shell: bash  # Use bash shell for commands
+    working-directory: ./  # Run commands in root folder
+
+# -------------------------------
+# Step 3: Define the workflow jobs
+# -------------------------------
+jobs:
+
+  # ---------- Job 1 ----------
+  build:
+    runs-on: ubuntu-latest   # GitHub-hosted runner environment
+    concurrency: build_group # Ensures only one build runs at a time
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4   # Clones repo to runner
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'  # Version of Node.js
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the project
+        run: npm run build
+
+      - name: Run basic tests
+        run: npm test
+
+  # ---------- Job 2 ----------
+  deploy:
+    needs: build  # Waits for 'build' job to finish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print deploy message
+        run: echo "Deploying the app after successful build and test"
+
+      - name: Simulated Deployment Step
+        run: |
+          echo "Uploading files to production server..."
+          sleep 2
+          echo "Deployment successful!"
