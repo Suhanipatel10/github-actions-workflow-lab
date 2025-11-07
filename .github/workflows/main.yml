@@ -1,58 +1,26 @@
-name: Practical 6 - GitHub Actions Workflow
+name: Node.js CI Demo
 
-# -------------------------------
-# Step 1: Define when this workflow should run
-# -------------------------------
 on:
-  push:        # Triggered whenever code is pushed to any branch
-  pull_request:  # Triggered when a pull request is created
-  workflow_dispatch:  # Manual trigger from the GitHub Actions UI
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
-# -------------------------------
-# Step 2: Default settings (optional)
-# -------------------------------
-defaults:
-  run:
-    shell: bash  # Use bash shell for commands
-    working-directory: ./  # Run commands in root folder
-
-# -------------------------------
-# Step 3: Define the workflow jobs
-# -------------------------------
 jobs:
-
-  # ---------- Job 1 ----------
   build:
-    runs-on: ubuntu-latest   # GitHub-hosted runner environment
-    concurrency: build_group # Ensures only one build runs at a time
+    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4   # Clones repo to runner
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: '20'  # Version of Node.js
+          node-version: '18'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build the project
-        run: npm run build
-
-      - name: Run basic tests
+      - name: Run test script
         run: npm test
-
-  # ---------- Job 2 ----------
-  deploy:
-    needs: build  # Waits for 'build' job to finish
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print deploy message
-        run: echo "Deploying the app after successful build and test"
-
-      - name: Simulated Deployment Step
-        run: |
-          echo "Uploading files to production server..."
-          sleep 2
-          echo "Deployment successful!"
