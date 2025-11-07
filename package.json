@@ -1,0 +1,8 @@
+{
+  "name": "workflow-demo",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "echo 'Building the app...'",
+    "test": "echo 'Running tests...' && exit 0"
+  }
+}
